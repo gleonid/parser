@@ -2835,6 +2835,15 @@ DropTableStmt:
 	{
 		$$ = &ast.DropTableStmt{IfExists: true, Tables: $5.([]*ast.TableName), IsView: false}
 	}
+|	"DROP" "TEMPORARY" TableOrTables TableNameList RestrictOrCascadeOpt
+	{
+		$$ = &ast.DropTableStmt{Tables: $4.([]*ast.TableName), IsView: false, IsTemporary: true}
+	}
+|	"DROP" "TEMPORARY" TableOrTables "IF" "EXISTS" TableNameList RestrictOrCascadeOpt
+	{
+		$$ = &ast.DropTableStmt{IfExists: true, Tables: $6.([]*ast.TableName), IsView: false, IsTemporary: true}
+	}
+
 
 DropViewStmt:
 	"DROP" "VIEW" TableNameList RestrictOrCascadeOpt
